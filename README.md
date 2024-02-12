@@ -1,0 +1,43 @@
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+# rab
+
+Helper utilities for reliable A/B testing.
+
+## Installation
+
+This package contains relatively niche helper code, probably only useful
+to me, and so won’t be published on CRAN.
+
+If you want it too, install the package directly from this GitHub
+repository:
+
+``` r
+devtools::install_github("domodwyer/rab")
+```
+
+## Example
+
+This package works great with \[prompr\] to analyse A/B metric
+measurements:
+
+``` r
+library(promr)
+library(rab)
+
+# Grab a 24h window, during which an A/B changeover occurred.
+query_range(
+  "histogram_quantile(0.90, sum(rate(ingester_query_stream_duration_seconds_bucket{}[1m])) by (le))",
+  "1959-09-13 10:00:00", # 10AM of the 13th
+  "1959-09-14 10:00:00", # 10AM of the 14th
+  step = "1m"
+) |>
+  # Extract the values
+  tidyr::unnest(values) |>
+  # Split into the A and B halves, ignoring a 30 minute deployment interval
+  ab_split(a_end = "1959-09-13 14:00:00", b_start = "1959-09-13 14:30:00") |>
+  # And perform a t-test against the A & B samples
+  ab_t_test()
+# nolint end
+```
