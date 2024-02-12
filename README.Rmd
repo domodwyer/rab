@@ -32,7 +32,7 @@ devtools::install_github("domodwyer/rab")
 
 This package works great with [prompr] to analyse A/B metric measurements:
 
-```{r example, eval=FALSE, echo=c(-5, -20)}
+```{r example, eval=FALSE, echo=c(-5, -18)}
 library(promr)
 library(rab)
 

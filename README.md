@@ -39,5 +39,4 @@ query_range(
   ab_split(a_end = "1959-09-13 14:00:00", b_start = "1959-09-13 14:30:00") |>
   # And perform a t-test against the A & B samples
   ab_t_test()
-# nolint end
 ```
